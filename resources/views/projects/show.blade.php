@@ -11,15 +11,7 @@
 
 </head>
 <body>
-    <h1>Welcome to Birdboard</h1>
-    <ul>
-        @forelse($projects as $project)
-            <li>
-                <a href="{{ $project->path() }}">{{ $project->title }}</a>
-            </li>
-        @empty
-            <h2>No projetcs created yet</h2>
-        @endforelse
-    </ul>
+    <h1>{{ $project->title }}</h1>
+    <div>{{ $project->description }}</div>
 </body>
 </html>
