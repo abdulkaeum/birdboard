@@ -24,7 +24,9 @@ Route::get('/dashboard', function () {
 
 require __DIR__.'/auth.php';
 
+Route::group(['middleware' => 'auth'], function(){
+    Route::get('projects', [ProjectsController::class, 'index']);
+    Route::get('projects/{project}', [ProjectsController::class, 'show']);
+    Route::post('projects', [ProjectsController::class, 'store']);
+});
 
-Route::get('projects', [ProjectsController::class, 'index']);
-Route::get('projects/{project}', [ProjectsController::class, 'show']);
-Route::post('projects', [ProjectsController::class, 'store'])->middleware('auth');

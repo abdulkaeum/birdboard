@@ -12,7 +12,7 @@ class ProjectsTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
 
-    public function test_only_authenticated_users_can_create_projects()
+    public function test_guests_cannot_create_projects()
     {
         // if we're not authenticated then we won't have a user to associate the project to
         // so this WILL fail which is what we are testing for
@@ -45,17 +45,43 @@ class ProjectsTest extends TestCase
         $this->get('projects')->assertSee($attributes['title']);
     }
 
-    public function test_a_user_can_view_a_project()
+    public function test_a_user_can_view_their_project()
     {
-        //$this->withoutExceptionHandling();
+        $this->actingAs(User::factory()->create());
 
-        $project = Project::factory()->create();
+        $this->withoutExceptionHandling();
+
+        $project = Project::factory()->create(['user_id' => auth()->id()]);
 
         // assert that you can see a title and a description for any given project
 
         $this->get($project->path())
             ->assertSee($project->title)
             ->assertSee($project->description);
+    }
+
+    public function test_an_authenticated_user_cannot_view_projects_of_others()
+    {
+        $this->actingAs(User::factory()->create());
+
+        //$this->withoutExceptionHandling();
+
+        $project = Project::factory()->create();
+
+        $this->get($project->path())->assertStatus(403);
+
+    }
+
+    public function test_guests_cannot_view_projects()
+    {
+        $this->get('projects')->assertRedirect('login');
+    }
+
+    public function test_guests_cannot_view_a_single_project()
+    {
+        $project = Project::factory()->create();
+
+        $this->get($project->path())->assertRedirect('login');
     }
 
     public function test_a_project_requires_a_title()
