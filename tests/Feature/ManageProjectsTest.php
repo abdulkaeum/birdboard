@@ -8,11 +8,11 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class ProjectsTest extends TestCase
+class ManageProjectsTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
 
-    public function test_guests_cannot_create_projects()
+    public function test_guests_cannot_manage_projects()
     {
         // if we're not authenticated then we won't have a user to associate the project to
         // so this WILL fail which is what we are testing for
@@ -22,9 +22,12 @@ class ProjectsTest extends TestCase
 
         //$this->withoutExceptionHandling();
 
-        $attributes = Project::factory()->raw();
+        $project = Project::factory()->create();
 
-        $this->post('projects', $attributes)->assertRedirect('login');
+        $this->get('projects')->assertRedirect('login');
+        $this->get('projects/create')->assertRedirect('login');
+        $this->get($project->path())->assertRedirect('login');
+        $this->post('projects', $project->toArray())->assertRedirect('login');
     }
 
     public function test_a_user_can_create_a_project()
@@ -32,6 +35,8 @@ class ProjectsTest extends TestCase
         $this->withoutExceptionHandling();
 
         $this->actingAs(User::factory()->create());
+
+        $this->get('projects/create')->assertStatus(200);
 
         $attributes = [
             'title' => $this->faker->sentence(),
@@ -70,18 +75,6 @@ class ProjectsTest extends TestCase
 
         $this->get($project->path())->assertStatus(403);
 
-    }
-
-    public function test_guests_cannot_view_projects()
-    {
-        $this->get('projects')->assertRedirect('login');
-    }
-
-    public function test_guests_cannot_view_a_single_project()
-    {
-        $project = Project::factory()->create();
-
-        $this->get($project->path())->assertRedirect('login');
     }
 
     public function test_a_project_requires_a_title()
