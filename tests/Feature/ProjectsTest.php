@@ -3,17 +3,35 @@
 namespace Tests\Feature;
 
 use App\Models\Project;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class ProjectsTest extends TestCase
 {
-    use WithFaker ,RefreshDatabase;
+    use WithFaker, RefreshDatabase;
+
+    public function test_only_authenticated_users_can_create_projects()
+    {
+        // if we're not authenticated then we won't have a user to associate the project to
+        // so this WILL fail which is what we are testing for
+        // user_id will be set to null if we are not signed in
+        // we've added middleware of auth onto the POST 'projects' route
+        // if you're not authenticated then you shouldn't be here at that point
+
+        //$this->withoutExceptionHandling();
+
+        $attributes = Project::factory()->raw();
+
+        $this->post('projects', $attributes)->assertRedirect('login');
+    }
 
     public function test_a_user_can_create_a_project()
     {
         $this->withoutExceptionHandling();
+
+        $this->actingAs(User::factory()->create());
 
         $attributes = [
             'title' => $this->faker->sentence(),
@@ -29,9 +47,11 @@ class ProjectsTest extends TestCase
 
     public function test_a_user_can_view_a_project()
     {
-        $this->withoutExceptionHandling();
+        //$this->withoutExceptionHandling();
 
         $project = Project::factory()->create();
+
+        // assert that you can see a title and a description for any given project
 
         $this->get($project->path())
             ->assertSee($project->title)
@@ -40,14 +60,30 @@ class ProjectsTest extends TestCase
 
     public function test_a_project_requires_a_title()
     {
+        // user must be signed in
+
+        $this->actingAs(User::factory()->create());
+
+        // create a project and override it's title to null
+
         $attributes = Project::factory()->raw(['title' => '']);
+
+        // make sure that validation checks if title is set
 
         $this->post('projects', $attributes)->assertSessionHasErrors('title');
     }
 
     public function test_a_project_requires_a_description()
     {
+        // user must be signed in
+
+        $this->actingAs(User::factory()->create());
+
+        // create a project and override it's description to null
+
         $attributes = Project::factory()->raw(['description' => '']);
+
+        // make sure that validation checks if description is set
 
         $this->post('projects', $attributes)->assertSessionHasErrors('description');
     }
