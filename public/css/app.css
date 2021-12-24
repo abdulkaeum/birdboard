@@ -1467,6 +1467,22 @@ select {
     width: 66.666667%;
   }
 
+  .lg\:w-2\/6 {
+    width: 33.333333%;
+  }
+
+  .lg\:w-4\/6 {
+    width: 66.666667%;
+  }
+
+  .lg\:w-7\/12 {
+    width: 58.333333%;
+  }
+
+  .lg\:w-1\/2 {
+    width: 50%;
+  }
+
   .lg\:flex-wrap {
     flex-wrap: wrap;
   }

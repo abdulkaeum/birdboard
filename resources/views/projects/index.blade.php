@@ -5,7 +5,7 @@
                 {{ __('Project Dashboard') }}
             </h2>
 
-            <a href="#" class="btn-primary">New Projects</a>
+            <a href="/projects/create" class="btn-primary">New Projects</a>
         </div>
     </x-slot>
 

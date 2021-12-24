@@ -1,8 +1,12 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Create a Project
-        </h2>
+        <div class="lg:flex justify-between w-full items-end">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                Create a Project
+            </h2>
+
+            <a href="" class="btn-primary">Back</a>
+        </div>
     </x-slot>
 
     <div class="py-12">
@@ -19,7 +23,8 @@
 
                         <div>
                             <label for="description">Description</label>
-                            <textarea name="description" id="description" cols="30" rows="10" placeholder="Add a description"></textarea>
+                            <textarea name="description" id="description" cols="30" rows="10"
+                                      placeholder="Add a description"></textarea>
                         </div>
 
                         <button type="submit">Submit</button>
