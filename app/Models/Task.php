@@ -16,6 +16,10 @@ class Task extends Model
         'completed' => 'boolean',
     ];
 
+    protected $touches = [
+        'project'
+    ];
+
     public function path()
     {
         // $this->assertEquals("/projects/{$task->project->id}/tasks/{$task->id}", $task->path());
