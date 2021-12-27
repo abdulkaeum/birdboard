@@ -20,7 +20,7 @@
                                 <h2 class="text-gray text-lg mb-3">Tasks</h2>
                                 @foreach($project->tasks as $task)
                                     <div class="card mb-2">
-                                        <form action="/{{ $project->path() . '/tasks/' . $task->id }}" method="POST">
+                                        <form action="{{ $task->path()}}" method="POST">
                                             @method('PATCH')
                                             @csrf
 
@@ -30,7 +30,7 @@
                                                        name="body"
                                                        id="body"
                                                        value="{{ $task->body }}"
-                                                       class="{{ $task->completed ? 'text-gray-400' : '' }} w-full mr-2 border-transparent focus:ring-opacity-50 focus:border-transparent focus:ring-indigo-50"
+                                                       class="{{ $task->completed ? 'text-gray-400' : '' }} w-full mr-2 border-transparent focus:border-transparent focus:ring-opacity-50 focus:ring-indigo-50"
                                                 >
 
                                                 <label for="completed"></label>
@@ -39,6 +39,7 @@
                                                        name="completed"
                                                        {{ $task->completed ? 'checked' : '' }}
                                                        onchange="this.form.submit()"
+                                                       class="rounded p-4 border-cyan-400 focus:border-transparent focus:ring-indigo-50"
                                                 >
                                             </div>
                                         </form>

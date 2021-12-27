@@ -15,4 +15,16 @@ class Task extends Model
     protected $casts = [
         'completed' => 'boolean',
     ];
+
+    public function path()
+    {
+        // $this->assertEquals("/projects/{$task->project->id}/tasks/{$task->id}", $task->path());
+
+        return "/projects/{$this->project->id}/tasks/{$this->id}";
+    }
+
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
+    }
 }

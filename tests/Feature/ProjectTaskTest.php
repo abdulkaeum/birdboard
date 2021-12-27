@@ -50,7 +50,7 @@ class ProjectTaskTest extends TestCase
         // try to update a task to the $project that does not belong to the actingAs user
         // we want a 403 forbidden
         // if we get anuthing other than 403 then anyone can update a task
-        $this->patch($project->path() . '/tasks/' . $task->id, ['body' => 'update it'])
+        $this->patch($task->path(), ['body' => 'update it'])
             ->assertStatus(403);
 
         $this->assertDatabaseMissing('tasks', ['body' => 'update it']);
