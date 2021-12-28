@@ -63,11 +63,21 @@
                             <div>
                                 <h2 class="text-gray text-lg mb-3">Notes</h2>
                                 {{-- Notes --}}
+                                <form action="/{{ $project->path() }}" method="POST">
+                                    @csrf
+                                    @method('PATCH')
 
-                                <label>
+                                    <label for="notes"></label>
                                     <textarea
-                                        class="card w-full max-h-fit overflow-hidden">{{ $project->title }}</textarea>
-                                </label>
+                                        name="notes"
+                                        id="notes"
+                                        class="card w-full max-h-fit overflow-hidden border-transparent focus:border-transparent focus:ring-opacity-50 focus:ring-indigo-50"
+                                        placeholder="Add any notes here"
+                                    >{{ $project->notes }}</textarea>
+
+
+                                    <button type="submit" class="btn-primary">Save</button>
+                                </form>
                             </div>
                         </div>
                         <div class="lg:w-1/3 px-3">
