@@ -91,14 +91,26 @@ class ManageProjectsTest extends TestCase
 
     public function test_an_authenticated_user_cannot_view_projects_of_others()
     {
-        $this->actingAs(User::factory()->create());
-
         //$this->withoutExceptionHandling();
 
+        $this->actingAs(User::factory()->create());
+
+        // a project not belong to the actingAs user
         $project = Project::factory()->create();
 
         $this->get($project->path())->assertStatus(403);
+    }
 
+    public function test_an_authenticated_user_cannot_update_the_projects_of_others()
+    {
+        //$this->withoutExceptionHandling();
+
+        $this->actingAs(User::factory()->create());
+
+        // a project not belong to the actingAs user
+        $project = Project::factory()->create();
+
+        $this->patch($project->path(), [])->assertStatus(403);
     }
 
     public function test_a_project_requires_a_title()
