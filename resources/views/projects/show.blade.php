@@ -19,18 +19,18 @@
 
                                 <h2 class="text-gray text-lg mb-3">Tasks</h2>
                                 @foreach($project->tasks as $task)
-                                    <div class="card mb-2">
+                                    <div class="card">
                                         <form action="{{ $task->path()}}" method="POST">
                                             @method('PATCH')
                                             @csrf
 
-                                            <div class="flex ">
+                                            <div class="flex">
                                                 <label for="body"></label>
                                                 <input type="text"
                                                        name="body"
                                                        id="body"
                                                        value="{{ $task->body }}"
-                                                       class="{{ $task->completed ? 'text-gray-400' : '' }} w-full mr-2 border-transparent focus:border-transparent focus:ring-opacity-50 focus:ring-indigo-50"
+                                                       class="{{ $task->completed ? 'text-gray-400' : '' }} w-full mr-2 inputCSS"
                                                 >
 
                                                 <label for="completed"></label>
@@ -46,7 +46,7 @@
                                     </div>
                                 @endforeach
 
-                                <div class="card mb-2">
+                                <div class="card">
                                     <form method="POST" action="/{{ $project->path() . '/tasks' }}">
                                         @csrf
                                         <label>
@@ -71,7 +71,7 @@
                                     <textarea
                                         name="notes"
                                         id="notes"
-                                        class="card w-full max-h-fit overflow-hidden border-transparent focus:border-transparent focus:ring-opacity-50 focus:ring-indigo-50"
+                                        class="card w-full max-h-fit overflow-hidden inputCSS"
                                         placeholder="Add any notes here"
                                     >{{ $project->notes }}</textarea>
 

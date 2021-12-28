@@ -16,18 +16,22 @@
                     <form action="/projects" method="POST">
                         @csrf
 
-                        <div>
-                            <label for="title">Title</label>
-                            <input type="text" name="title" id="title" placeholder="Title">
+                        <div class="card">
+                            <label for="title"></label>
+                            <input type="text" name="title" id="title" placeholder="Title"
+                                class="inputCSS w-full"
+                            >
                         </div>
 
-                        <div>
-                            <label for="description">Description</label>
+                        <div class="card">
+                            <label for="description"></label>
                             <textarea name="description" id="description" cols="30" rows="10"
-                                      placeholder="Add a description"></textarea>
+                                      placeholder="Add a description"
+                                      class="inputCSS w-full"
+                            ></textarea>
                         </div>
 
-                        <button type="submit">Submit</button>
+                        <button type="submit" class="btn-primary">Submit</button>
                     </form>
                 </div>
             </div>
