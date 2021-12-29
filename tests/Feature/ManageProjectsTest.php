@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Str;
+use Tests\Setup\ProjectFactory;
 use Tests\TestCase;
 
 class ManageProjectsTest extends TestCase
@@ -62,29 +63,23 @@ class ManageProjectsTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $this->actingAs(User::factory()->create());
+        $project = app(ProjectFactory::class)->create();
 
-        $project = Project::factory()->create(['user_id' => auth()->id()]);
+        $this->actingAs($project->user)
+            ->patch($project->path(), $attribtes = ['notes' => 'Changed'])->assertRedirect($project->path());
 
-        $this->patch($project->path(), [
-            'notes' => 'Changed'
-        ])->assertRedirect($project->path());
-
-        $this->assertDatabaseHas('projects', [
-            'notes' => 'Changed'
-        ]);
+        $this->assertDatabaseHas('projects', $attribtes);
     }
 
     public function test_a_user_can_view_their_project()
     {
-        $this->actingAs(User::factory()->create());
-
         $this->withoutExceptionHandling();
 
-        $project = Project::factory()->create(['user_id' => auth()->id()]);
+        $project = app(ProjectFactory::class)->create();
 
         // assert that you can see a title and a description for any given project
-        $this->get($project->path())
+        $this->actingAs($project->user)
+            ->get($project->path())
             ->assertSee($project->title)
             ->assertSee(Str::limit($project->description, 100));
     }
