@@ -33,8 +33,10 @@ class ProjectsTasksController extends Controller
             'body' => request('body'),
         ]);
 
-        if(request()->has('completed')){
+        if(request('completed')){
             $task->completed();
+        } else {
+            $task->incompleted();
         }
 
         return redirect($project->path());
