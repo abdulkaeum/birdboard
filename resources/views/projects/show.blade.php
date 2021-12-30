@@ -5,7 +5,10 @@
                 <a href="/projects">My Projects</a> / {{ $project->title }}
             </p>
 
-            <a href="" class="btn-primary">Back</a>
+            <div>
+                <a href="{{ URL::previous() }}" class="btn-primary">Back</a>
+                <a href="/{{ $project->path().'/edit' }}" class="btn-primary">Edit</a>
+            </div>
         </div>
     </x-slot>
 
