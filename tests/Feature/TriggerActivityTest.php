@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Task;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\Setup\ProjectFactory;
@@ -37,9 +38,24 @@ class TriggerActivityTest extends TestCase
 
         $project->addTask('New Task');
 
+        // test to see if the subject_id and type are being saved
+        //dd($project->activity->last()->toArray());
+
         $this->assertCount(2, $project->activity);
-        $this->assertEquals('created_task', $project->activity->last()->description);
+
+        // use tap to wrap related assertions
+        tap($project->activity->last(), function ($activity){
+            $this->assertEquals('created_task', $activity->description);
+            // access the subject relationship i.e activity.subject_type = App/Models/Task
+            $this->assertInstanceOf(Task::class, $activity->subject);
+
+            // access the body attribute from the morph subject i.e from the model
+            // subject = a model
+            // e.g tasks->body
+            $this->assertEquals('New Task', $activity->subject->body);
+        });
     }
+
 
     public function test_completing_a_task()
     {
@@ -52,7 +68,11 @@ class TriggerActivityTest extends TestCase
         ]);
 
         $this->assertCount(3, $project->activity);
-        $this->assertEquals('completed_task', $project->activity->last()->description);
+
+        tap($project->activity->last(), function ($activity){
+            $this->assertEquals('completed_task', $activity->description);
+            $this->assertInstanceOf(Task::class, $activity->subject);
+        });
     }
 
     public function test_incompleting_a_task()

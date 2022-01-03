@@ -36,7 +36,7 @@ class Task extends Model
             'completed' => true
         ]);
 
-        $this->project->recordActivity('completed_task');
+        $this->recordActivity('completed_task');
     }
 
     public function incomplete()
@@ -45,6 +45,23 @@ class Task extends Model
             'completed' => false
         ]);
 
-        $this->project->recordActivity('uncompleted_task');
+        $this->recordActivity('uncompleted_task');
+    }
+
+    public function activity()
+    {
+        // gets both the class and foreign key i.e activity.subject_id, activity.subject_type
+        return $this->morphMany(Activity::class, 'subject')->latest();
+    }
+
+    public function recordActivity($description)
+    {
+        // will also add
+        // subject_type = App\Models\Task
+        // subject_id = 1
+        $this->activity()->create([
+            'project_id' => $this->project->id,
+            'description' => $description
+        ]);
     }
 }

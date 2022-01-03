@@ -1,1 +1,1 @@
-Task completed
+Task completed "{{ $activity->subject->body }}"

@@ -1,1 +1,1 @@
-Task created
+Created "{{ $activity->subject->body }}"
