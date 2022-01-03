@@ -85,6 +85,28 @@
                         </div>
                         <div class="lg:w-1/3 px-3">
                             @include('projects._card')
+
+                            <div class="card mt-3">
+                                <ul class="text-xs">
+                                    @foreach($project->activity as $activity)
+                                        <li class="{{ $loop->last ? '' : 'mb-1' }}">
+                                            @if($activity->description === 'created')
+                                                Created the project
+                                            @elseif($activity->description === 'updated')
+                                                Updated the project
+                                            @elseif($activity->description === 'created_task')
+                                                Task created
+                                            @elseif($activity->description === 'completed_task')
+                                                Task completed
+                                            @elseif($activity->description === 'uncompleted_task')
+                                                Task uncompleted
+                                            @else
+                                                {{ $activity->description }}
+                                            @endif
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
