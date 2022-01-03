@@ -37,6 +37,10 @@ class Task extends Model
         static::created(function ($task){
             $task->project->recordActivity('created_task');
         });
+
+        static::deleted(function ($task) {
+            $task->project->recordActivity('deleted_task');
+        });
     }
 
     public function complete()
@@ -54,6 +58,6 @@ class Task extends Model
             'completed' => false
         ]);
 
-        //$this->project->recordActivity('incompleted_task');
+        $this->project->recordActivity('uncompleted_task');
     }
 }
