@@ -9,31 +9,38 @@ trait RecordsActivity
     public $oldAttributes = [];
 
     /**
-     * Boot the trait
+     * Boot the trait for Task or Project model
      */
     public static function bootRecordsActivity()
     {
-        // for Task or Porject model
-        static::updating(function ($model) {
-            $model->oldAttributes = $model->getOriginal();
-        });
-
-        // if $recordableEvents is on model us it
-        if (isset(static::$recordableEvents)) {
-            $recordableEvents = static::$recordableEvents;
-        } else {
-            // otherwise use our defaults
-            $recordableEvents = ['created', 'updated', 'deleted'];
-        }
-
-        foreach ($recordableEvents as $event) {
+        foreach (self::recordableEvents() as $event) {
             static::$event(function ($model) use ($event) {
-                if (class_basename($model) !== 'Project') {
-                    $event = "{$event}_" . strtolower(class_basename($model));
-                }
-                $model->recordActivity($event);
+                $model->recordActivity($model->activityDescription($event));
             });
+
+            if($event === 'updated') {
+                static::updating(function ($model) {
+                    $model->oldAttributes = $model->getOriginal();
+                });
+            }
         }
+    }
+
+    protected function activityDescription ($description){
+        if (class_basename($this) !== 'Project') {
+            return "{$description}_" . strtolower(class_basename($this)); // e.g created_task
+        }
+
+        return $description; //e.g created
+    }
+
+    /**
+     * if $recordableEvents is on model use it
+     * otherwise use our defaults
+     */
+    protected static function recordableEvents()
+    {
+        return static::$recordableEvents ?? ['created', 'updated', 'deleted'];
     }
 
     public function recordActivity($description)
