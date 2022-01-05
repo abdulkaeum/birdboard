@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Models\Activity;
+use Illuminate\Support\Arr;
 
 trait RecordsActivity
 {
@@ -62,8 +63,12 @@ trait RecordsActivity
     {
         if ($this->wasChanged()) {
             return [
-                'before' => array_diff($this->oldAttributes, $this->getAttributes()),
-                'after' => $this->getChanges()
+                'before' => Arr::except(
+                    array_diff($this->oldAttributes, $this->getAttributes()), 'updated_at'
+                ),
+                'after' => Arr::except(
+                    $this->getChanges(), 'updated_at'
+                )
             ];
         }
     }
