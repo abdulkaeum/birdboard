@@ -17,6 +17,10 @@ class CreateActivitiesTable extends Migration
             $table->id();
             $table->foreignId('project_id')->constrained()->cascadeOnDelete();
             $table->string('description');
+            $table->nullableMorphs('creator');
+                //$table->unsignedInteger('creator_id'); // 9
+                //$table->string('creator_type'); // App/Models/Task
+            $table->text('changes')->nullable();
             $table->timestamps();
         });
     }

@@ -10,7 +10,7 @@
 
 @layer components {
     .card {
-        @apply bg-white p-5 rounded-lg shadow mb-2;
+        @apply bg-white p-5 rounded-lg shadow mb-2 border border-indigo-400;
     }
 
     .inputCSS {

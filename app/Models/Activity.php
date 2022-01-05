@@ -9,10 +9,14 @@ class Activity extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['project_id', 'description'];
+    protected $fillable = ['project_id', 'description', 'changes'];
+
+    protected $casts = [
+        'changes' => 'array'
+    ];
 
     // a relationship to get the thing / model why the activity was created
-    public function subject()
+    public function creator()
     {
         // polymorphic relation - gets both the class and foreign key
         // then using these 2 it will then retrieve the model

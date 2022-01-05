@@ -1,1 +1,1 @@
-Created "{{ $activity->subject->body }}"
+Created "{{ $activity->creator->body }}"

@@ -18,18 +18,34 @@ class TriggerActivityTest extends TestCase
 
         $this->assertCount(1, $project->activity);
 
-        $this->assertEquals('created', $project->activity[0]->description);
+        tap($project->activity->last(), function ($activity) {
+            $this->assertEquals('created', $activity->description);
+
+            $this->assertNull($activity->changes);
+        });
     }
 
     public function test_updating_a_project()
     {
-        $project = app(ProjectFactory::class)->create();
+        //$this->withoutExceptionHandling();
 
-        $project->update(['notes' => 'Changed']);
+        $project = app(ProjectFactory::class)->create();
+        $originalTitle = $project->title;
+
+        $project->update(['title' => 'Changed']);
 
         $this->assertCount(2, $project->activity);
 
-        $this->assertEquals('updated', $project->activity->last()->description);
+        tap($project->activity->last(), function ($activity) use ($originalTitle) {
+            $this->assertEquals('updated', $activity->description);
+
+            $expected = [
+                'before' => ['title' => $originalTitle],
+                'after' => ['title' => 'Changed']
+            ];
+
+            $this->assertEquals($expected, $activity->changes);
+        });
     }
 
     public function test_creating_a_task()
@@ -38,7 +54,7 @@ class TriggerActivityTest extends TestCase
 
         $project->addTask('New Task');
 
-        // test to see if the subject_id and type are being saved
+        // test to see if the creator_id and type are being saved
         //dd($project->activity->last()->toArray());
 
         $this->assertCount(2, $project->activity);
@@ -46,13 +62,13 @@ class TriggerActivityTest extends TestCase
         // use tap to wrap related assertions
         tap($project->activity->last(), function ($activity){
             $this->assertEquals('created_task', $activity->description);
-            // access the subject relationship i.e activity.subject_type = App/Models/Task
-            $this->assertInstanceOf(Task::class, $activity->subject);
+            // access the creator relationship i.e activity.creator_type = App/Models/Task
+            $this->assertInstanceOf(Task::class, $activity->creator);
 
-            // access the body attribute from the morph subject i.e from the model
-            // subject = a model
+            // access the body attribute from the morph creator i.e from the model
+            // creator = a model
             // e.g tasks->body
-            $this->assertEquals('New Task', $activity->subject->body);
+            $this->assertEquals('New Task', $activity->creator->body);
         });
     }
 
@@ -71,7 +87,7 @@ class TriggerActivityTest extends TestCase
 
         tap($project->activity->last(), function ($activity){
             $this->assertEquals('completed_task', $activity->description);
-            $this->assertInstanceOf(Task::class, $activity->subject);
+            $this->assertInstanceOf(Task::class, $activity->creator);
         });
     }
 

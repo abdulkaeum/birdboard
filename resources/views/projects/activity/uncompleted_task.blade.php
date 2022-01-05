@@ -1,1 +1,1 @@
-Task uncompleted "{{ $activity->subject->body }}"
+Task uncompleted "{{ $activity->creator->body }}"

@@ -50,15 +50,15 @@ class Task extends Model
 
     public function activity()
     {
-        // gets both the class and foreign key i.e activity.subject_id, activity.subject_type
-        return $this->morphMany(Activity::class, 'subject')->latest();
+        // gets both the class and foreign key i.e activity.creator_id, activity.creator_type
+        return $this->morphMany(Activity::class, 'creator')->latest();
     }
 
     public function recordActivity($description)
     {
         // will also add
-        // subject_type = App\Models\Task
-        // subject_id = 1
+        // creator_type = App\Models\Task
+        // creator_id = 1
         $this->activity()->create([
             'project_id' => $this->project->id,
             'description' => $description
