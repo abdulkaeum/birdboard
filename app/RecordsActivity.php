@@ -6,6 +6,11 @@ use App\Models\Activity;
 
 trait RecordsActivity
 {
+    /**
+     * The project's old attributes
+     *
+     * @var array
+     */
     public $oldAttributes = [];
 
     /**
@@ -18,7 +23,7 @@ trait RecordsActivity
                 $model->recordActivity($model->activityDescription($event));
             });
 
-            if($event === 'updated') {
+            if ($event === 'updated') {
                 static::updating(function ($model) {
                     $model->oldAttributes = $model->getOriginal();
                 });
@@ -26,12 +31,9 @@ trait RecordsActivity
         }
     }
 
-    protected function activityDescription ($description){
-        if (class_basename($this) !== 'Project') {
-            return "{$description}_" . strtolower(class_basename($this)); // e.g created_task
-        }
-
-        return $description; //e.g created
+    protected function activityDescription($description): string
+    {
+        return "{$description}_" . strtolower(class_basename($this)); // e.g created_task
     }
 
     /**
@@ -66,9 +68,12 @@ trait RecordsActivity
         }
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * gets both the class and foreign key i.e activity.creator_id, activity.creator_type
+     */
     public function activity()
     {
-        // gets both the class and foreign key i.e activity.creator_id, activity.creator_type
         return $this->morphMany(Activity::class, 'creator')->latest();
     }
 }
