@@ -17,6 +17,23 @@ trait RecordsActivity
         static::updating(function ($model) {
             $model->oldAttributes = $model->getOriginal();
         });
+
+        // if $recordableEvents is on model us it
+        if (isset(static::$recordableEvents)) {
+            $recordableEvents = static::$recordableEvents;
+        } else {
+            // otherwise use our defaults
+            $recordableEvents = ['created', 'updated', 'deleted'];
+        }
+
+        foreach ($recordableEvents as $event) {
+            static::$event(function ($model) use ($event) {
+                if (class_basename($model) !== 'Project') {
+                    $event = "{$event}_" . strtolower(class_basename($model));
+                }
+                $model->recordActivity($event);
+            });
+        }
     }
 
     public function recordActivity($description)

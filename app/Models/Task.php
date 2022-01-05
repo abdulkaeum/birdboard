@@ -21,6 +21,8 @@ class Task extends Model
         'project'
     ];
 
+    protected static $recordableEvents = ['created', 'deleted'];
+
     public function path()
     {
         return "/projects/{$this->project->id}/tasks/{$this->id}";
