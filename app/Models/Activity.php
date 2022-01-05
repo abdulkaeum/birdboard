@@ -9,7 +9,7 @@ class Activity extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['project_id', 'description', 'changes'];
+    protected $fillable = ['project_id', 'description', 'changes', 'user_id'];
 
     protected $casts = [
         'changes' => 'array'
@@ -21,5 +21,10 @@ class Activity extends Model
         // polymorphic relation - gets both the class and foreign key
         // then using these 2 it will then retrieve the model
         return $this->morphTo();
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

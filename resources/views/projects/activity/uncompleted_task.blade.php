@@ -1,1 +1,1 @@
-Task uncompleted "{{ $activity->creator->body }}"
+{{ $activity->user->name }}  uncompleted task "{{ $activity->creator->body }}"

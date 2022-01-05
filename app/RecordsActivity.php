@@ -53,10 +53,20 @@ trait RecordsActivity
         // creator_id = 1
 
         $this->activity()->create([
+            'user_id' => $this->activityOwner()->id,
+            'project_id' => class_basename($this) === 'Project' ? $this->id : $this->project->id,
             'description' => $description,
-            'changes' => $this->activityChanges(),
-            'project_id' => class_basename($this) === 'Project' ? $this->id : $this->project->id
+            'changes' => $this->activityChanges()
         ]);
+    }
+
+    /**
+     * if we have project relation on the model then return that and call the user method on that class
+     * @return mixed
+     */
+    protected function activityOwner()
+    {
+        return ($this->project ?? $this)->user;
     }
 
     public function activityChanges()

@@ -1,1 +1,1 @@
-Created "{{ $activity->creator->body }}"
+{{ $activity->user->name }} created "{{ $activity->creator->body }}"
