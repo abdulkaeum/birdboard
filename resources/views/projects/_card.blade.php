@@ -4,5 +4,12 @@
         <div
             class="text-sm text-gray-500">{{ Str::limit($project->description, 100) }}
         </div>
+        <footer>
+            <form action="{{ $project->path() }}" method="POST" class="sm:text-right">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="text-xs">Delete</button>
+            </form>
+        </footer>
     </div>
 </a>
