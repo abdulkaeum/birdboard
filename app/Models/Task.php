@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\RecordsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use phpDocumentor\Reflection\Types\Boolean;
 
 class Task extends Model
 {
-    use HasFactory;
+    use HasFactory, RecordsActivity;
 
     protected $fillable = ['body', 'completed'];
 
@@ -46,22 +47,5 @@ class Task extends Model
         ]);
 
         $this->recordActivity('uncompleted_task');
-    }
-
-    public function activity()
-    {
-        // gets both the class and foreign key i.e activity.creator_id, activity.creator_type
-        return $this->morphMany(Activity::class, 'creator')->latest();
-    }
-
-    public function recordActivity($description)
-    {
-        // will also add
-        // creator_type = App\Models\Task
-        // creator_id = 1
-        $this->activity()->create([
-            'project_id' => $this->project->id,
-            'description' => $description
-        ]);
     }
 }
