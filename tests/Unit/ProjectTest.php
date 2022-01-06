@@ -38,4 +38,13 @@ class ProjectTest extends TestCase
         // now check to see if the created tasks exists for the given project
         $this->assertTrue($project->tasks->contains($task));
     }
+
+    public function test_it_can_invite_a_user()
+    {
+        $project = Project::factory()->create();
+
+        $project->invite($user = User::factory()->create());
+
+        $this->assertTrue($project->members->contains($user));
+    }
 }

@@ -16,7 +16,7 @@ class ProjectsController extends Controller
 
     public function show(Project $project)
     {
-        $this->authorize('view', $project);
+        $this->authorize('update', $project);
 
         return view('projects.show', compact('project'));
     }
@@ -53,7 +53,7 @@ class ProjectsController extends Controller
 
     public function destroy(Project $project)
     {
-        $this->authorize('delete', $project);
+        $this->authorize('update', $project);
 
         $project->delete();
 
