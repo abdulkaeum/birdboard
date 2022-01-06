@@ -84,16 +84,7 @@
                             </div>
                         </div>
                         <div class="lg:w-1/3 px-3">
-                            <div class="card mt-3">
-                                @foreach($project->members as $members)
-                                    <img src="https://i.pravatar.cc/60?u={{ $members->user_id }}"
-                                         width="35"
-                                         height="35"
-                                         alt="{{ $members->name }}'s avatar"
-                                         class="rounded-full"
-                                    >
-                                @endforeach
-                            </div>
+                            @include('projects.invite.avatar_invitres')
                             @include('projects._card')
                             @include('projects.activity.card')
                         </div>
