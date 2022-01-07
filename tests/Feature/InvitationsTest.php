@@ -21,6 +21,13 @@ class InvitationsTest extends TestCase
         $this->actingAs($user)
             ->post($project->path() . '/invitations')
             ->assertStatus(403);
+
+        $project->invite($user);
+
+        $this->actingAs($user)
+            ->post($project->path() . '/invitations')
+            ->assertStatus(403);
+
     }
 
     public function test_a_project_owner_can_invite_a_user()

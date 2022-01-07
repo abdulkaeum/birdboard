@@ -22,6 +22,23 @@ class ProjectPolicy
     }
 
     /**
+     * Determine whether the user can update the model.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Project  $project
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function update(User $user, Project $project)
+    {
+        return $user->is($project->user) || $project->members->contains($user);
+    }
+
+    public function manage(User $user, Project $project)
+    {
+        return $user->is($project->user);
+    }
+
+    /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
@@ -42,18 +59,6 @@ class ProjectPolicy
     public function create(User $user)
     {
         //
-    }
-
-    /**
-     * Determine whether the user can update the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function update(User $user, Project $project)
-    {
-        return $user->is($project->user) || $project->members->contains($user);
     }
 
     /**
