@@ -14,6 +14,11 @@
 - Multiple error bags
 
 #### Application features 
+- Authenticate users
+- Create projects
+- Create tasks
+- Invite users
+- Record activity
 
 #### Screenshots
 <img alt="" width="300" src="public/app-images/home.PNG">
