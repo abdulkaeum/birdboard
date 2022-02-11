@@ -21,4 +21,4 @@
 - Record activity
 
 #### Screenshots
-<img alt="" width="300" src="public/app-images/home.PNG">
+<img alt="" style="max-width: 800px; width: 100%;" src="public/app-images/home.PNG">
