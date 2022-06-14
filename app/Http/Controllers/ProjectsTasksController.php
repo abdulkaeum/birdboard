@@ -6,6 +6,7 @@ use App\Models\Project;
 use App\Models\Task;
 use Illuminate\Http\Request;
 
+
 class ProjectsTasksController extends Controller
 {
     public function store(Project $project)
